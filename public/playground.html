@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QUnit Example</title>
+</head>
+<script>
+    window.onload = () => {
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      const p1 = {x:300, y:300};
+      const p2 = {x:100, y:100};
+      const rect = laterne.getIntegerPoints(laterne.getRectPoints(p1, p2, 20));
+      laterne.logPoints(rect);
+      ctx.moveTo(rect[0].x, rect[0].y);
+      for (let i=0; i<4; i++) {
+        ctx.lineTo(rect[i].x, rect[i].y);
+      }
+      ctx.lineTo(rect[0].x, rect[0].y);
+      ctx.stroke();
+    }
+</script>
+<body>
+    <canvas id="myCanvas" width="800" height="400" style="border:1px solid #000000;"/>
+    <script src="api.js"></script>
+</body>
+</html>
