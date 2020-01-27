@@ -1,8 +1,20 @@
 let laterne = {};
 
+
+laterne.isPointInside = (p, a, b, d) => {
+    const ab = laterne.getVector(a, b);
+    const ap = laterne.getVector(a, p);
+    const ad = laterne.getVector(a, d);
+    const scalar1 = laterne.getScalarProduct(ap, ab)
+    const scalar2 = laterne.getScalarProduct(ap, ad)
+    return (0 < scalar1) &&
+        (scalar1 < laterne.getScalarProduct(ab, ab)) &&
+        (0 < scalar2) &&
+        (scalar2 < laterne.getScalarProduct(ad, ad));
+}
+
 laterne.getVector = (p1, p2) => {
-    let v = {};
-    v.c = [];
+    let v = laterne.createVector();
     v.c[0] = p2.x - p1.x;
     v.c[1] = p2.y - p1.y;
     if (typeof p2.z !== 'undefined') {
@@ -10,6 +22,19 @@ laterne.getVector = (p1, p2) => {
     }
     return v;
 };
+
+laterne.createVector = (a, b) => {
+    const v = {
+        c: []
+    };
+    if (typeof a !== 'undefined') {
+        v.c[0] = a;
+    }
+    if (typeof b !== 'undefined') {
+        v.c[1] = b;
+    }
+    return v;
+}
 
 laterne.logVector = (v) => {
     let str = '';
@@ -56,8 +81,7 @@ laterne.getVectorOfLength = (v, length) => {
 }
 
 laterne.normalize = (v) => {
-    let ret = {};
-    ret.c = [];
+    let ret = laterne.createVector();
     ret.c[0] = v.c[0] / laterne.getVectorLength(v);
     ret.c[1] = v.c[1] / laterne.getVectorLength(v);
     return ret;
@@ -72,17 +96,20 @@ laterne.getVectorLength = (v) => {
 }
 
 laterne.getNormalVectors = (v) => {
-    let n1 = {};
-    n1.c = [];
+    let n1 = laterne.createVector();
     n1.c[0] = -v.c[1];
     n1.c[1] = v.c[0];
 
-    let n2 = {};
-    n2.c = [];
+    let n2 = laterne.createVector();
     n2.c[0] = v.c[1];
     n2.c[1] = -v.c[0];
 
     return [n1, n2];
+}
+
+laterne.getScalarProduct = (v1, v2) => {
+    let ret = v1.c[0]*v2.c[0] + v1.c[1]*v2.c[1];
+    return ret;
 }
 
 laterne.getPoint = (p, v) => {

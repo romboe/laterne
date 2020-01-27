@@ -37,7 +37,7 @@ QUnit.test( "getNormalVectors", function( assert ) {
     assert.ok( 1 == "1", "Passed!" );
 });
 
-QUnit.test( "getVectorOfLength", function( assert ) {  
+QUnit.test( "getVectorOfLength", function( assert ) {
     const v = {};
     v.c = [];
     v.c[0] = 4;
@@ -47,7 +47,7 @@ QUnit.test( "getVectorOfLength", function( assert ) {
     assert.equal(v2.c[1], 6);
 });
 
-QUnit.test( "getRectPoints", function( assert ) {  
+QUnit.test( "getRectPoints", function( assert ) {
     const p1 = {x:1, y:2};
     const p2 = {x:4, y:2};
     const width = 1;
@@ -60,4 +60,23 @@ QUnit.test( "getRectPoints", function( assert ) {
     assert.equal(rect[2].y, 1);
     assert.equal(rect[3].x, 1);
     assert.equal(rect[3].y, 1);
+});
+
+QUnit.test( "getScalarProduct", function( assert ) {
+    const v1 = laterne.createVector(2, 3);
+    const v2 = laterne.createVector(4, 7);
+    assert.equal(laterne.getScalarProduct(v1, v2), 29);
+});
+
+QUnit.test( "isPointInside", function( assert ) {
+    const a = {x:1, y:1};
+    const b = {x:1, y:3};
+    const d = {x:4, y:1};
+    assert.ok(laterne.isPointInside({x:2, y:2}, a, b, d));
+    assert.ok(laterne.isPointInside({x:3, y:2}, a, b, d));
+
+    assert.ok(!laterne.isPointInside({x:1, y:1}, a, b, d), "auf der Linie");
+    assert.ok(!laterne.isPointInside({x:3, y:3}, a, b, d), "auf der Linie");
+    assert.ok(!laterne.isPointInside({x:2, y:4}, a, b, d));
+    assert.ok(!laterne.isPointInside({x:3, y:0}, a, b, d));
 });
