@@ -7,11 +7,15 @@
 </head>
 <script>
     window.onload = () => {
+      var indicator = document.getElementById("indicator");
+
       var c = document.getElementById("myCanvas");
+      var c_boundingRect = c.getBoundingClientRect();
+
       var ctx = c.getContext("2d");
       const p1 = {x:300, y:300};
       const p2 = {x:100, y:100};
-      const rect = laterne.getIntegerPoints(laterne.getRectPoints(p1, p2, 20));
+      const rect = laterne.getIntegerPoints(laterne.getRectPoints(p1, p2, 60));
       laterne.logPoints(rect);
       ctx.moveTo(rect[0].x, rect[0].y);
       for (let i=0; i<4; i++) {
@@ -19,10 +23,34 @@
       }
       ctx.lineTo(rect[0].x, rect[0].y);
       ctx.stroke();
+
+      var mousedown = false;
+      c.addEventListener("mousedown", e => {
+        mousedown = true;
+      });
+      c.addEventListener("mouseup", e => {
+        mousedown = false;
+      });
+      c.addEventListener("mousemove", e => {
+        if (mousedown) {
+          x = e.clientX - c_boundingRect.left;
+         y = e.clientY - c_boundingRect.top;
+         // console.log(x + ':' + y);
+         if (laterne.isPointInsideOrOnLine({x:x,y:y}, rect[0], rect[1], rect[3])) {
+           indicator.style.backgroundColor = 'greenyellow';
+         }
+         else {
+           indicator.style.backgroundColor = 'red';
+         }
+        }
+      });
     }
 </script>
-<body>
-    <canvas id="myCanvas" width="800" height="400" style="border:1px solid #000000;"/>
-    <script src="api.js"></script>
+<body style="cursor:crosshair">
+    <div>
+      <canvas id="myCanvas" width="800" height="400" style="border:1px solid #000000;float:left"></canvas>
+      <div id="indicator" style="border:1px solid #000000;width:80px;height:45px;float:left"></div>
+  </div>
+  <script src="api.js"></script>
 </body>
 </html>
