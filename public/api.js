@@ -13,6 +13,18 @@ laterne.isPointInside = (p, a, b, d) => {
         (scalar2 < laterne.getScalarProduct(ad, ad));
 }
 
+laterne.isPointInsideOrOnLine = (p, a, b, d) => {
+    const ab = laterne.getVector(a, b);
+    const ap = laterne.getVector(a, p);
+    const ad = laterne.getVector(a, d);
+    const scalar1 = laterne.getScalarProduct(ap, ab)
+    const scalar2 = laterne.getScalarProduct(ap, ad)
+    return (0 <= scalar1) &&
+        (scalar1 <= laterne.getScalarProduct(ab, ab)) &&
+        (0 <= scalar2) &&
+        (scalar2 <= laterne.getScalarProduct(ad, ad));
+}
+
 laterne.getVector = (p1, p2) => {
     let v = laterne.createVector();
     v.c[0] = p2.x - p1.x;
